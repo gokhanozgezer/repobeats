@@ -1,3 +1,7 @@
+<p align="center">
+<img width="400" height="259" alt="repobeats" src="https://github.com/user-attachments/assets/fb001e39-21a3-458b-8402-61114bb6d47d" />
+</p>
+
 # RepoBeats
 
 > Transform your git commits into music
@@ -98,7 +102,7 @@ RepoBeats maps commit metadata to musical parameters:
 - **Dashboard**: Repository overview, commit heatmap, author stats
 - **Mapping**: Customize how commits become notes
 - **Playback**: Listen to your repo with real-time visualization
-- **Export**: Download MIDI, JSON, or bundled archives
+- **Export**: Download WAV, MIDI, JSON, or bundled archives
 
 ## Examples
 
@@ -124,6 +128,9 @@ repobeats inspect --json > stats.json
 # Export anonymized bundle
 repobeats export --anonymize --out my-project.zip
 ```
+<p align="center">
+<img width="953" height="708" alt="repobeats_Studio" src="https://github.com/user-attachments/assets/2048a021-15eb-4b3d-acf1-f06c7010c934" />
+</p>
 
 ## Requirements
 
