@@ -1,86 +1,141 @@
+<p align="center">
+<img width="400" height="259" alt="repobeats" src="https://github.com/user-attachments/assets/fb001e39-21a3-458b-8402-61114bb6d47d" />
+</p>
+
 # RepoBeats
 
-Transform your git commits into music.
+> Transform your git commits into music
 
 RepoBeats analyzes your repository's commit history and generates unique musical compositions based on commit patterns, authors, timestamps, and code changes.
+
+## Quick Start
+
+```bash
+# Run in any git repository
+npx repobeats ui
+```
 
 ## Installation
 
 ```bash
-# Run directly with npx (no install needed)
-npx repobeats ui
-
-# Or install globally
+# Install globally
 npm install -g repobeats
+
+# Or use directly with npx
+npx repobeats ui
 ```
 
-## Usage
+## Commands
 
-### Start the UI
+### `repobeats ui`
+
+Start the interactive UI in your browser.
 
 ```bash
-# In any git repository
-cd your-project
-repobeats ui
+repobeats ui [path] [options]
 
-# Or specify a path
-repobeats ui /path/to/repo
-
-# Options
-repobeats ui --port 3000        # Custom port
-repobeats ui --no-open          # Don't open browser
-repobeats ui --max-commits 500  # Limit commits
+Options:
+  -p, --port <number>     Custom port (default: auto-detect)
+  --host <address>        Host to bind (default: 127.0.0.1)
+  --no-open               Don't open browser automatically
+  --since <date>          Start from this date/commit
+  --until <date>          End at this date/commit
+  --max-commits <n>       Limit number of commits (default: 1000)
+  --no-cache              Disable commit caching
 ```
 
-### Export MIDI directly
+### `repobeats export`
+
+Export your repository as MIDI, WAV, JSON, or a full bundle.
 
 ```bash
-# Export as MIDI file
-repobeats export --format midi
+repobeats export [path] [options]
 
-# Export full bundle (MIDI + data + config)
-repobeats export --format bundle
-
-# Use a preset
-repobeats export --preset chill --out my-repo.mid
-
-# Anonymize data
-repobeats export --anonymize
+Options:
+  -f, --format <type>     Output format: midi, wav, json, bundle (default: bundle)
+  -o, --out <path>        Output file path
+  --preset <name>         Use a preset: default, chill, intense, minimal, ambient
+  --instruments <list>    Instruments for WAV: guitar,piano,drums,strings (comma-separated)
+  --since <date>          Start from this date/commit
+  --until <date>          End at this date/commit
+  --max-commits <n>       Limit commits
+  --anonymize             Remove author/message data
 ```
 
-### Inspect repository
+### `repobeats inspect`
+
+View repository statistics and mapping preview.
 
 ```bash
-# View commit statistics
-repobeats inspect
+repobeats inspect [path] [options]
 
-# Output as JSON
-repobeats inspect --json
+Options:
+  --since <date>          Start from this date/commit
+  --until <date>          End at this date/commit
+  --max-commits <n>       Limit commits
+  --json                  Output as JSON
 ```
 
-## Mapping Presets
+## Presets
 
-| Preset | Description |
-|--------|-------------|
-| `default` | Balanced, pentatonic scale, 120 BPM |
-| `chill` | Slow, major scale, soft dynamics |
-| `intense` | Fast, minor scale, high velocity |
-| `minimal` | Fixed duration/velocity, clean |
-| `ambient` | Slow, dorian mode, atmospheric |
+| Preset | BPM | Scale | Character |
+|--------|-----|-------|-----------|
+| `default` | 120 | Pentatonic | Balanced, melodic |
+| `chill` | 70 | Major | Slow, soft, relaxing |
+| `intense` | 160 | Minor | Fast, aggressive |
+| `minimal` | 90 | Pentatonic | Clean, repetitive |
+| `ambient` | 60 | Dorian | Atmospheric, spacey |
 
 ## How It Works
 
-RepoBeats maps commit data to musical parameters:
+RepoBeats maps commit metadata to musical parameters:
 
-- **Pitch**: Based on commit SHA, author name, or time of day
-- **Velocity**: Based on lines added/deleted or file count
-- **Duration**: Based on diff size or message length
-- **Tempo**: Fixed BPM or derived from commit frequency
+| Parameter | Sources |
+|-----------|---------|
+| **Pitch** | Commit SHA, author name, hour of day, day of week |
+| **Velocity** | Lines added/deleted, files changed, message length |
+| **Duration** | Diff size, file count, message length |
+| **Tempo** | Fixed BPM or commit frequency |
+
+## UI Features
+
+- **Dashboard**: Repository overview, commit heatmap, author stats
+- **Mapping**: Customize how commits become notes
+- **Playback**: Listen to your repo with real-time visualization
+- **Export**: Download WAV, MIDI, JSON, or bundled archives
+
+## Examples
+
+```bash
+# Open current directory
+repobeats ui
+
+# Open specific repository
+repobeats ui ~/projects/my-app
+
+# Export last 100 commits as MIDI with chill preset
+repobeats export --max-commits 100 --preset chill --format midi
+
+# Export as WAV with piano and strings only
+repobeats export --format wav --instruments piano,strings --preset ambient
+
+# Export as WAV with all instruments
+repobeats export --format wav --preset default
+
+# Inspect with JSON output
+repobeats inspect --json > stats.json
+
+# Export anonymized bundle
+repobeats export --anonymize --out my-project.zip
+```
+<p align="center">
+<img width="953" height="708" alt="repobeats_Studio" src="https://github.com/user-attachments/assets/2048a021-15eb-4b3d-acf1-f06c7010c934" />
+</p>
 
 ## Requirements
 
 - Node.js 18+
-- Git repository
+- Git repository with at least one commit
 
 ## License
 
