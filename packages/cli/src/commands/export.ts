@@ -1,9 +1,23 @@
-import { Command } from 'commander'
+import { Command, InvalidArgumentError } from 'commander'
 import { resolve, basename } from 'node:path'
 import { existsSync, writeFileSync } from 'node:fs'
 import chalk from 'chalk'
 import ora from 'ora'
-import { DEFAULT_MAX_COMMITS, PRESETS, type PresetName } from '@repobeats/shared'
+import { DEFAULT_MAX_COMMITS, MAX_COMMITS_LIMIT, PRESETS, type PresetName } from '@repobeats/shared'
+
+function parseMaxCommits(value: string): number {
+  const parsed = parseInt(value, 10)
+  if (isNaN(parsed)) {
+    throw new InvalidArgumentError('Must be a valid number.')
+  }
+  if (parsed < 1) {
+    throw new InvalidArgumentError('Must be at least 1.')
+  }
+  if (parsed > MAX_COMMITS_LIMIT) {
+    throw new InvalidArgumentError(`Must not exceed ${MAX_COMMITS_LIMIT}.`)
+  }
+  return parsed
+}
 
 const AVAILABLE_INSTRUMENTS = ['guitar', 'piano', 'drums', 'strings'] as const
 type InstrumentName = typeof AVAILABLE_INSTRUMENTS[number]
@@ -29,7 +43,7 @@ export function createExportCommand(): Command {
     .option('--instruments <list>', 'Instruments for WAV: guitar,piano,drums,strings (comma-separated)', 'guitar,piano,drums,strings')
     .option('--since <rev>', 'Start commit (revision or date)')
     .option('--until <rev>', 'End commit (revision or date)')
-    .option('--max-commits <number>', 'Maximum commits to process', (val) => parseInt(val, 10), DEFAULT_MAX_COMMITS)
+    .option('--max-commits <number>', `Maximum commits to process (max: ${MAX_COMMITS_LIMIT})`, parseMaxCommits, DEFAULT_MAX_COMMITS)
     .option('--anonymize', 'Anonymize author names and commit messages', false)
     .action(async (repoPath: string, options: ExportOptions) => {
       const spinner = ora()
