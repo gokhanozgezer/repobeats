@@ -1,6 +1,6 @@
 {
   "name": "repobeats-monorepo",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "description": "Transform your git commits into music",
   "scripts": {

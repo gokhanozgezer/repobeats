@@ -159,7 +159,7 @@ repobeats/
 ├── packages/
 │   ├── cli/        # CLI application (Commander.js)
 │   ├── server/     # Express API + Git/MIDI services
-│   └── ui/         # Vue 3 + Pinia + Tone.js
+│   └── ui/         # Vue 3 + Pinia + WebAudioFont
 ├── shared/         # Zod schemas, types, presets
 └── README.md
 ```

@@ -1,6 +1,6 @@
 {
   "name": "repobeats",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Transform your git commits into music - CLI tool",
   "author": "Gokhan Ozgezer",
   "license": "SEE LICENSE IN LICENSE",
