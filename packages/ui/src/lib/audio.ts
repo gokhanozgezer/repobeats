@@ -237,6 +237,7 @@ let onPlaybackEnd: (() => void) | null = null
 let animationFrameId: number | null = null
 let startTime: number = 0
 let totalDuration: number = 0
+let actualNoteSpacing: number = 0 // Actual spacing used for audio scheduling
 let currentProgressCallback: ((index: number) => void) | null = null
 let notesRef: NoteEvent[] = []
 
@@ -280,6 +281,8 @@ export async function playNotes(
   const minSpacing = 0.15 // minimum 150ms between notes
   const actualSpacing = Math.max(noteSpacing, minSpacing)
 
+  // Store for progress tracking - use same spacing as audio scheduling
+  actualNoteSpacing = actualSpacing
   totalDuration = notes.length * actualSpacing + 2
   startTime = audioContext.currentTime
 
@@ -370,15 +373,16 @@ function trackProgress(): void {
 
   const elapsed = audioContext.currentTime - startTime
 
-  // Find current note index based on elapsed time and note spacing
-  if (currentProgressCallback && notesRef.length > 0) {
-    const noteSpacing = totalDuration / notesRef.length
-    const currentIndex = Math.min(Math.floor(elapsed / noteSpacing), notesRef.length - 1)
+  // Find current note index based on elapsed time and actual note spacing
+  // Use the same spacing that was used for audio scheduling
+  if (currentProgressCallback && notesRef.length > 0 && actualNoteSpacing > 0) {
+    const currentIndex = Math.min(Math.floor(elapsed / actualNoteSpacing), notesRef.length - 1)
     currentProgressCallback(Math.max(0, currentIndex))
   }
 
-  // Check if playback is done
-  if (elapsed >= totalDuration) {
+  // Check if playback is done - all notes have been played
+  const audioEndTime = notesRef.length * actualNoteSpacing
+  if (elapsed >= audioEndTime) {
     isPlaying = false
     if (onPlaybackEnd) {
       onPlaybackEnd()

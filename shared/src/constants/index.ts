@@ -8,4 +8,4 @@ export const MAX_COMMITS_LIMIT = 2000
 export const DEFAULT_CACHE_DIR = '.cache/repobeats'
 
 export const API_VERSION = 'v1'
-export const APP_VERSION = '0.1.4'
+export const APP_VERSION = '0.1.5'
